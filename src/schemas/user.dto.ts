@@ -19,4 +19,4 @@ export const UserSchema = new Schema({
         type: Number,
         required: true
     }
-}).loadClass(createUserDTO)
+},{timestamps: true}).loadClass(createUserDTO)

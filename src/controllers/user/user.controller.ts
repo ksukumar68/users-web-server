@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { ObjectId } from 'mongoose';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res, HttpStatus } from '@nestjs/common';
 import { User } from 'src/interfaces/user.interface';
 import { createUserDTO } from 'src/schemas/user.dto';
 import { UserService } from './user.service';
@@ -11,26 +10,34 @@ export class UserController {
     }
 
     @Post('/addUser')
-    addUser(@Body() user: createUserDTO): Promise<User>{
-        const newUser = this.userService.createUser(user);
-        return newUser;
+    async addUser(@Res() response, @Body() user: createUserDTO): Promise<User>{
+        const newUser = await this.userService.createUser(user);
+        return response.status(HttpStatus.OK).json({
+            data: newUser, status: true
+        })
     }
 
     @Delete('/deleteUser/:id')
-    deleteUser(@Param() params){
-        const newUser = this.userService.deleteUser(params.id);
-        return newUser;
+    async deleteUser(@Res() response, @Param() params){
+        const newUser = await this.userService.deleteUser(params.id);
+        return response.status(HttpStatus.OK).json({
+            data: newUser, status: true
+        })
     }
 
     @Get('/getUser')
-    getAllUser(): Promise<User[]>{
-        const userList = this.userService.getAllUser();
-        return userList;
+    async getAllUser(@Res() response): Promise<User[]>{
+        const userList = await this.userService.getAllUser();
+        return response.status(HttpStatus.OK).json({
+            data: userList, status: true
+        })
     }
 
     @Patch('/updateUser/:id')
-    updateUser(@Param('id') params, @Body() updatedUser: User){
-        const userList = this.userService.updateUser(params.id, updatedUser);
-        return userList;
+    async updateUser(@Res() response, @Param('id') params, @Body() updatedUser: User){
+        const userList = await this.userService.updateUser(params.id, updatedUser);
+        return response.status(HttpStatus.OK).json({
+            data: userList, status: true
+        })
     }
 }

@@ -7,7 +7,7 @@ import { GlobalInterceptor } from './handlers/interceptors/global.interceptor';
 async function bootstrap() {
   const port = config.port;
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors();
   app.useGlobalInterceptors(new GlobalInterceptor())
   await app.listen(port, ()=>{
     console.log("App is running")
