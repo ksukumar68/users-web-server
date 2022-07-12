@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Res, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res, HttpStatus, HttpException } from '@nestjs/common';
 import { User } from 'src/interfaces/user.interface';
 import { createUserDTO } from 'src/schemas/user.dto';
 import { UserService } from './user.service';
@@ -19,10 +19,8 @@ export class UserController {
 
     @Delete('/deleteUser/:id')
     async deleteUser(@Res() response, @Param() params){
-        const newUser = await this.userService.deleteUser(params.id);
-        return response.status(HttpStatus.OK).json({
-            data: newUser, status: true
-        })
+        const deletedAcknowledgement = await this.userService.deleteUser(params.id);
+        return response.status(HttpStatus.OK).send(deletedAcknowledgement)
     }
 
     @Get('/getUser')
@@ -35,9 +33,7 @@ export class UserController {
 
     @Patch('/updateUser/:id')
     async updateUser(@Res() response, @Param('id') params, @Body() updatedUser: User){
-        const userList = await this.userService.updateUser(params.id, updatedUser);
-        return response.status(HttpStatus.OK).json({
-            data: userList, status: true
-        })
+        const updatedUserData = await this.userService.updateUser(params.id, updatedUser);
+        return response.status(HttpStatus.OK).send(updatedUserData)
     }
 }

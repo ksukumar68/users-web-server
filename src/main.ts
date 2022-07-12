@@ -1,14 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { config } from './config';
-import { GlobalInterceptor } from './handlers/interceptors/global.interceptor';
+import { AllExceptionsFilter } from './handlers/interceptors/API-error.filter';
 
 async function bootstrap() {
   const port = config.port;
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  app.useGlobalInterceptors(new GlobalInterceptor())
+  app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(port, ()=>{
     console.log("App is running")
   });

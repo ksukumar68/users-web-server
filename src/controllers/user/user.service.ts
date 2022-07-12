@@ -14,13 +14,21 @@ export class UserService {
     //creating new users    
     async createUser(user: createUserDTO): Promise<User>{
         const newUser = await new this.userModel(user);
-        return newUser.save();
+        return await newUser.save();
     }
 
     //deleteing user using ObjectId
     async deleteUser(userId: ObjectId){
+        const userData = await this.userModel.findOne({"_id": userId}).exec()
+        if(!userData){
+            return {
+                status: false, message: "No such user exists"
+            }
+        }
         const resData =  await this.userModel.deleteOne({"_id": userId}).exec();
-        return resData;
+        return {
+            data: resData, status: true
+        };
     }
 
     //fetching all users list
@@ -31,8 +39,16 @@ export class UserService {
 
     //updating user data
     async updateUser(userId: ObjectId, updatedUser: User){
+        const userData = await this.userModel.findOne({"_id": userId}).exec()
+        if(!userData){
+            return {
+                status: false, message: "No such user exists"
+            }
+        }
         const newUser = await this.userModel.findOneAndUpdate(userId,updatedUser, {new: true});
-        return newUser;
+        return {
+            data: newUser, status: true
+        };
     }
 
 }
