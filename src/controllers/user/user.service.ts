@@ -31,7 +31,7 @@ export class UserService {
 
     //updating user data
     async updateUser(userId: ObjectId, updatedUser: User){
-        const newUser = await this.userModel.updateOne(userId,updatedUser, {new: true});
+        const newUser = await this.userModel.findOneAndUpdate(userId,updatedUser, {new: true});
         return newUser;
     }
 
