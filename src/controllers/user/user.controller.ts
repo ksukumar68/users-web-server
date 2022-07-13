@@ -32,7 +32,7 @@ export class UserController {
     }
 
     @Patch('/updateUser/:id')
-    async updateUser(@Res() response, @Param('id') params, @Body() updatedUser: User){
+    async updateUser(@Res() response, @Param() params, @Body() updatedUser: User){
         const updatedUserData = await this.userService.updateUser(params.id, updatedUser);
         return response.status(HttpStatus.OK).send(updatedUserData)
     }

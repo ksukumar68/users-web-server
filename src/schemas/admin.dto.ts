@@ -14,4 +14,4 @@ export const AdminSchema = new Schema({
         type: String,
         required: true
     }
-}).loadClass(createAdminDTO)
+},{timestamps: true}).loadClass(createAdminDTO)
