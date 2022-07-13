@@ -16,7 +16,7 @@ export const UserSchema = new Schema({
         required: true
     },
     dob: {
-        type: Number,
+        type: String,
         required: true
     }
 },{timestamps: true}).loadClass(createUserDTO)
